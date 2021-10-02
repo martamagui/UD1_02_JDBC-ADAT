@@ -24,7 +24,9 @@ public class Modelo {
 	private String pwd = "";
 	private String url = "jdbc:mysql://localhost/" + bd;
 	private Connection conexion;
+	private PreparedStatement pstmt;
 	private String sqlTabla1 = "SELECT * FROM BooksTable;";
+	private String[] sqlUpdates = { "UPDATE BooksTable SET ", "=? WHERE Titulo =?" };
 
 	public Modelo() {
 		// Cargar pantalla al empezar
@@ -68,7 +70,6 @@ public class Modelo {
 		String[] cabecera = new String[numColumnas];
 
 		Object[][] contenido = new Object[numFilas][numColumnas];
-		PreparedStatement pstmt;
 		try {
 			pstmt = conexion.prepareStatement(sqlTabla1);
 			ResultSet rset = pstmt.executeQuery();
@@ -86,7 +87,11 @@ public class Modelo {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		modelo = new DefaultTableModel(contenido, cabecera);
+		modelo = new DefaultTableModel(contenido, cabecera) {
+			public boolean isCellEditable(int row, int column) {
+				return false;// This causes all cells to be not editable
+			}
+		};
 
 	}
 
@@ -116,19 +121,64 @@ public class Modelo {
 		return numFilas;
 	}
 
-	public void annadirRegistro(String titulo, String autor, String categoria, Double precio) {
+	public void annadirRegistro(String titulo, String autor, String categoria, String precio) {
 		try {
 			Statement stmt = conexion.createStatement();
 			String qery = "INSERT INTO `BooksTable` (`Titulo`, `Autor`, `Categoria`, `Precio`) VALUES ('" + titulo
 					+ "','" + autor + "','" + categoria + "','" + precio + "')";
 			stmt.executeUpdate(qery);
 			stmt.close();
-			modelo.insertRow(modelo.getRowCount(), new String[] {(modelo.getRowCount()+1)+"", titulo, autor, categoria, precio.toString() });
+			modelo.insertRow(modelo.getRowCount(),
+					new String[] { (modelo.getRowCount() + 1) + "", titulo, autor, categoria, precio.toString() });
 
 		} catch (SQLException e) {
 			miVista.cambiarError("Error al añadir registro");
 			System.err.println(e);
 		}
+	}
+
+	public void modificarRegistro(String[] datos) {
+
+		try {
+			Statement stmt = conexion.createStatement();
+			ResultSet rset = pstmt.executeQuery();
+			ResultSetMetaData rsmd = (ResultSetMetaData) rset.getMetaData();
+			String[] cabecera = new String[getNumColumnas(sqlTabla1)];
+			String seleccion = datos[0];
+
+			// Conseguir nombre de las columnas
+			for (int i = 0; i < getNumColumnas(sqlTabla1); i++) {
+				cabecera[i] = rsmd.getColumnName(i + 1);
+			}
+			String qry = "";
+
+			for (int i = 1; i < cabecera.length; ++i) {
+				qry = "UPDATE BooksTable SET " + cabecera[i] + "='"+datos[i+1] +"' WHERE Titulo ='"+ seleccion+"';";
+				System.out.println(qry);
+				PreparedStatement pst;
+				pst = conexion.prepareStatement(qry);
+				System.out.println(pstmt);
+				stmt.executeUpdate(qry);
+				
+			}
+			// Para que la modificación del titulo no pise el resto
+			qry = "UPDATE BooksTable SET " +  cabecera[0] + "='"+datos[1] +"' WHERE Titulo ='"+ seleccion+"';";
+			pstmt = conexion.prepareStatement(qry);
+			stmt.executeUpdate(qry);
+			stmt.close();
+
+			cargarTabla1();
+			miVista.cambiarMsgResultado(
+					"Los datos han sido modificados, se mostrarán al minimizar y reabrir la ventana.");
+
+		} catch (SQLException e) {
+			miVista.cambiarError("Error al modificar registro");
+			System.err.println(e);
+		}
+	}
+
+	public void mostrarSeleccion(String seleccion) {
+		miVista.setSeleccion(seleccion);
 	}
 
 	public DefaultTableModel getModelo() {
@@ -138,4 +188,5 @@ public class Modelo {
 	public void setVista(Vista miVista) {
 		this.miVista = miVista;
 	}
+
 }

@@ -22,6 +22,12 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 public class Vista extends JFrame {
 
@@ -29,9 +35,9 @@ public class Vista extends JFrame {
 	private JTable table;
 	private Controlador miControlador;
 	private Modelo miModelo;
-	private JTextField txtTitulo,txtAutor,txtCategoria, txtPrecio;
-	JLabel lblError;
-
+	private JTextField txtTitulo, txtAutor, txtCategoria, txtPrecio;
+	private JLabel lblError, lblSeleccion;
+	private String tituloSeleccionado;
 
 	public static void main(String[] args) {
 		Vista frame = new Vista();
@@ -58,18 +64,24 @@ public class Vista extends JFrame {
 		contentPane.add(scrollPane);
 
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				miControlador.mostrarSeleccion();
+			}
+		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
-		
+
 		JLabel lblBBDD = new JLabel("Base de Datos - Librería Colinas");
 		lblBBDD.setFont(new Font("Tahoma", Font.BOLD, 26));
 		lblBBDD.setBounds(50, 0, 543, 68);
 		contentPane.add(lblBBDD);
-		
+
 		JLabel lblTitulo = new JLabel("Título:");
 		lblTitulo.setBounds(50, 116, 100, 20);
 		contentPane.add(lblTitulo);
-		
+
 		txtTitulo = new JTextField();
 		txtTitulo.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
@@ -79,11 +91,11 @@ public class Vista extends JFrame {
 		txtTitulo.setBounds(100, 116, 269, 20);
 		contentPane.add(txtTitulo);
 		txtTitulo.setColumns(10);
-		
+
 		JLabel lblAutor = new JLabel("Autor:");
 		lblAutor.setBounds(50, 166, 100, 20);
 		contentPane.add(lblAutor);
-		
+
 		txtAutor = new JTextField();
 		txtAutor.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
@@ -93,11 +105,11 @@ public class Vista extends JFrame {
 		txtAutor.setColumns(10);
 		txtAutor.setBounds(100, 166, 269, 20);
 		contentPane.add(txtAutor);
-		
+
 		JLabel lblCategora = new JLabel("Categoría:");
 		lblCategora.setBounds(420, 116, 100, 20);
 		contentPane.add(lblCategora);
-		
+
 		txtCategoria = new JTextField();
 		txtCategoria.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
@@ -107,11 +119,11 @@ public class Vista extends JFrame {
 		txtCategoria.setColumns(10);
 		txtCategoria.setBounds(506, 116, 269, 20);
 		contentPane.add(txtCategoria);
-		
+
 		JLabel lblPrecio = new JLabel("Precio:");
 		lblPrecio.setBounds(420, 166, 100, 20);
 		contentPane.add(lblPrecio);
-		
+
 		txtPrecio = new JTextField();
 		txtPrecio.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
@@ -121,49 +133,94 @@ public class Vista extends JFrame {
 		txtPrecio.setColumns(10);
 		txtPrecio.setBounds(506, 166, 269, 20);
 		contentPane.add(txtPrecio);
-		
+
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				miControlador.annadirRegistro();
 			}
 		});
-		btnAgregar.setBounds(349, 220, 89, 23);
+		btnAgregar.setBounds(100, 222, 85, 23);
 		contentPane.add(btnAgregar);
-		
+
 		lblError = new JLabel("");
-		lblError.setHorizontalAlignment(SwingConstants.CENTER);
+		lblError.setHorizontalAlignment(SwingConstants.LEFT);
 		lblError.setForeground(Color.RED);
-		lblError.setBounds(280, 197, 248, 14);
+		lblError.setBounds(100, 197, 508, 14);
 		contentPane.add(lblError);
+
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				miControlador.modificarRegistro();
+			}
+		});
+		btnModificar.setBounds(284, 222, 85, 23);
+		contentPane.add(btnModificar);
+
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEliminar.setBounds(193, 222, 85, 23);
+		contentPane.add(btnEliminar);
+
+		lblSeleccion = new JLabel("Selección:");
+		lblSeleccion.setBounds(420, 226, 355, 14);
+		contentPane.add(lblSeleccion);
 	}
-	
-	
+
+	// Getters campos de texto
 	public String getTitulo() {
 		return txtTitulo.getText();
 	}
+
 	public String getAutor() {
 		return txtAutor.getText();
 	}
+
 	public String getCategoria() {
 		return txtCategoria.getText();
 	}
-	public Double getPrecio() {
-		double precio = Double.parseDouble(txtPrecio.getText());
-		return precio;
+
+	public String getPrecio() {
+		return txtPrecio.getText();
 	}
-	
-	
-	//Comunicación entre clases
+
+	// Getter selección
+	public String getSeleccion() {
+		int fila = table.getSelectedRow();
+		String seleccion = table.getValueAt(fila, 0).toString();
+		tituloSeleccionado= seleccion;
+		return seleccion;
+	}
+
+	public String getTituloSeleccionado() {
+		return tituloSeleccionado;
+	}
+
+	// Setters
+	public void setSeleccion(String seleccion) {
+		lblSeleccion.setText("Selección: " + seleccion);
+	}
+
+	// Comunicación entre clases
 	public void setModelo(Modelo miModelo2) {
 		this.miModelo = miModelo2;
 	}
 
 	public void setControlador(Controlador miControlador2) {
-		this.miControlador = miControlador2; 
+		this.miControlador = miControlador2;
 	}
 
 	public void cambiarError(String msgError) {
-		lblError.setText(msgError);	
+		lblError.setText(msgError);
+		lblError.setForeground(Color.RED);
+	}
+
+	public void cambiarMsgResultado(String resultado) {
+		lblError.setText(resultado);
+		lblError.setForeground(Color.GREEN);
 	}
 }
