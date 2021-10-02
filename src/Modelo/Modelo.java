@@ -153,16 +153,17 @@ public class Modelo {
 			String qry = "";
 
 			for (int i = 1; i < cabecera.length; ++i) {
-				qry = "UPDATE BooksTable SET " + cabecera[i] + "='"+datos[i+1] +"' WHERE Titulo ='"+ seleccion+"';";
+				qry = "UPDATE BooksTable SET " + cabecera[i] + "='" + datos[i + 1] + "' WHERE Titulo ='" + seleccion
+						+ "';";
 				System.out.println(qry);
 				PreparedStatement pst;
 				pst = conexion.prepareStatement(qry);
 				System.out.println(pstmt);
 				stmt.executeUpdate(qry);
-				
+
 			}
 			// Para que la modificación del titulo no pise el resto
-			qry = "UPDATE BooksTable SET " +  cabecera[0] + "='"+datos[1] +"' WHERE Titulo ='"+ seleccion+"';";
+			qry = "UPDATE BooksTable SET " + cabecera[0] + "='" + datos[1] + "' WHERE Titulo ='" + seleccion + "';";
 			pstmt = conexion.prepareStatement(qry);
 			stmt.executeUpdate(qry);
 			stmt.close();
@@ -173,6 +174,26 @@ public class Modelo {
 
 		} catch (SQLException e) {
 			miVista.cambiarError("Error al modificar registro");
+			System.err.println(e);
+		}
+	}
+
+	public void borrarRegistro(String titulo) {
+		try {
+			Statement stmt = conexion.createStatement();
+			ResultSet rset = pstmt.executeQuery();
+			String qry = "DELETE FROM BooksTable WHERE Titulo='" + titulo + "';";
+			System.out.println(qry);
+			PreparedStatement pst;
+			pst = conexion.prepareStatement(qry);
+			System.out.println(pstmt);
+			stmt.executeUpdate(qry);
+			stmt.close();
+			cargarTabla1();
+			miVista.cambiarMsgResultado(
+					"Los datos han sido modificados, se mostrarán al minimizar y reabrir la ventana.");
+		} catch (SQLException e) {
+			miVista.cambiarError("Error al eliminar registro");
 			System.err.println(e);
 		}
 	}

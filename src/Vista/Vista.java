@@ -161,6 +161,7 @@ public class Vista extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				miControlador.borrarRegistro();
 			}
 		});
 		btnEliminar.setBounds(193, 222, 85, 23);
@@ -216,11 +217,11 @@ public class Vista extends JFrame {
 
 	public void cambiarError(String msgError) {
 		lblError.setText(msgError);
-		lblError.setForeground(Color.RED);
+		lblError.setForeground(new Color(188, 71, 73));
 	}
 
 	public void cambiarMsgResultado(String resultado) {
 		lblError.setText(resultado);
-		lblError.setForeground(Color.GREEN);
+		lblError.setForeground(new Color(56, 102, 65));
 	}
 }
