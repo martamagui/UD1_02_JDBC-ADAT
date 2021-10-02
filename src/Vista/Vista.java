@@ -1,9 +1,12 @@
+/**
+ * @author Marta Molina Aguilera
+ */
 package Vista;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableColumn;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -14,20 +17,23 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.Insets;
+
 import javax.swing.JTextField;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 
 public class Vista extends JFrame {
 
@@ -38,6 +44,7 @@ public class Vista extends JFrame {
 	private JTextField txtTitulo, txtAutor, txtCategoria, txtPrecio;
 	private JLabel lblError, lblSeleccion;
 	private String tituloSeleccionado;
+	private JLabel lblRectangle;
 
 	public static void main(String[] args) {
 		Vista frame = new Vista();
@@ -45,6 +52,7 @@ public class Vista extends JFrame {
 	}
 
 	public Vista() {
+		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowActivated(WindowEvent e) {
@@ -53,14 +61,18 @@ public class Vista extends JFrame {
 		});
 		setTitle("Tablas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 841, 789);
+		setBounds(100, 100, 941, 690);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(new Color(242, 232, 207));
+		contentPane.setBorder(new EmptyBorder(2, 2, 2, 2));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		UIManager.put("Button.select", new Color(56, 102, 65));
+		
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 257, 805, 304);
+		scrollPane.setBounds(60, 307, 805, 304);
+		scrollPane.setBorder(new EmptyBorder(getInsets()));
 		contentPane.add(scrollPane);
 
 		table = new JTable();
@@ -70,16 +82,19 @@ public class Vista extends JFrame {
 				miControlador.mostrarSeleccion();
 			}
 		});
+		table.setBorder(new EmptyBorder(getInsets()));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
 
 		JLabel lblBBDD = new JLabel("Base de Datos - Librería Colinas");
-		lblBBDD.setFont(new Font("Tahoma", Font.BOLD, 26));
-		lblBBDD.setBounds(50, 0, 543, 68);
+		lblBBDD.setForeground(new Color(56, 102, 65));
+		lblBBDD.setFont(new Font("Tahoma", Font.BOLD, 32));
+		lblBBDD.setBounds(60, 45, 543, 68);
 		contentPane.add(lblBBDD);
 
 		JLabel lblTitulo = new JLabel("Título:");
-		lblTitulo.setBounds(50, 116, 100, 20);
+		lblTitulo.setForeground(new Color(56, 102, 65));
+		lblTitulo.setBounds(60, 140, 100, 30);
 		contentPane.add(lblTitulo);
 
 		txtTitulo = new JTextField();
@@ -88,88 +103,122 @@ public class Vista extends JFrame {
 				cambiarError("");
 			}
 		});
-		txtTitulo.setBounds(100, 116, 269, 20);
+		txtTitulo.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		txtTitulo.setMargin(new Insets(2, 22, 2, 22));
+		txtTitulo.setBounds(119, 140, 300, 30);
 		contentPane.add(txtTitulo);
 		txtTitulo.setColumns(10);
 
 		JLabel lblAutor = new JLabel("Autor:");
-		lblAutor.setBounds(50, 166, 100, 20);
+		lblAutor.setForeground(new Color(56, 102, 65));
+		lblAutor.setBounds(60, 200, 100, 30);
 		contentPane.add(lblAutor);
 
 		txtAutor = new JTextField();
+		txtAutor.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		txtAutor.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				cambiarError("");
 			}
 		});
 		txtAutor.setColumns(10);
-		txtAutor.setBounds(100, 166, 269, 20);
+		txtAutor.setBounds(119, 200, 300, 30);
 		contentPane.add(txtAutor);
 
 		JLabel lblCategora = new JLabel("Categoría:");
-		lblCategora.setBounds(420, 116, 100, 20);
+		lblCategora.setForeground(new Color(56, 102, 65));
+		lblCategora.setBounds(470, 140, 100, 30);
 		contentPane.add(lblCategora);
 
 		txtCategoria = new JTextField();
+		txtCategoria.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		txtCategoria.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				cambiarError("");
 			}
 		});
 		txtCategoria.setColumns(10);
-		txtCategoria.setBounds(506, 116, 269, 20);
+		txtCategoria.setBounds(556, 140, 300, 30);
 		contentPane.add(txtCategoria);
 
 		JLabel lblPrecio = new JLabel("Precio:");
-		lblPrecio.setBounds(420, 166, 100, 20);
+		lblPrecio.setForeground(new Color(56, 102, 65));
+		lblPrecio.setBounds(470, 200, 100, 30);
 		contentPane.add(lblPrecio);
 
 		txtPrecio = new JTextField();
+		txtPrecio.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		txtPrecio.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				cambiarError("");
 			}
 		});
 		txtPrecio.setColumns(10);
-		txtPrecio.setBounds(506, 166, 269, 20);
+		txtPrecio.setBounds(556, 200, 300, 30);
 		contentPane.add(txtPrecio);
 
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setToolTipText("Agregar");
+		btnAgregar.setBackground(new Color(106, 153, 78));
+		btnAgregar.setForeground(new Color(242, 232, 207));
+		btnAgregar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				miControlador.annadirRegistro();
+
 			}
 		});
-		btnAgregar.setBounds(100, 222, 85, 23);
+		btnAgregar.setBounds(119, 260, 95, 30);
 		contentPane.add(btnAgregar);
 
 		lblError = new JLabel("");
 		lblError.setHorizontalAlignment(SwingConstants.LEFT);
-		lblError.setForeground(Color.RED);
-		lblError.setBounds(100, 197, 508, 14);
+		lblError.setBounds(119, 238, 508, 14);
 		contentPane.add(lblError);
 
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setToolTipText("Modificar");
+		btnModificar.setBorder(new EmptyBorder(getInsets()));
+		btnModificar.setBackground(new Color(106, 153, 78));
+		btnModificar.setForeground(new Color(242, 232, 207));
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				miControlador.modificarRegistro();
 			}
 		});
-		btnModificar.setBounds(284, 222, 85, 23);
+		btnModificar.setBounds(222, 260, 95, 30);
 		contentPane.add(btnModificar);
 
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setToolTipText("Eliminar");
+		btnEliminar.setBorder(new EmptyBorder(getInsets()));
+		btnEliminar.setBackground(new Color(106, 153, 78));
+		btnEliminar.setForeground(new Color(242, 232, 207));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				miControlador.borrarRegistro();
 			}
 		});
-		btnEliminar.setBounds(193, 222, 85, 23);
+		btnEliminar.setBounds(324, 260, 95, 30);
 		contentPane.add(btnEliminar);
 
 		lblSeleccion = new JLabel("Selección:");
-		lblSeleccion.setBounds(420, 226, 355, 14);
+		lblSeleccion.setForeground(new Color(56, 102, 65));
+		lblSeleccion.setBounds(470, 260, 386, 30);
 		contentPane.add(lblSeleccion);
+
+		lblRectangle = new JLabel("");
+		ImageIcon rectangle1 = new ImageIcon("imgs/Rectangle1.png");
+		Image newRecImg1 = rectangle1.getImage().getScaledInstance(885, 619, java.awt.Image.SCALE_SMOOTH);
+		lblRectangle.setIcon(new ImageIcon(newRecImg1));
+		lblRectangle.setBounds(20, 22, 885, 619);
+		contentPane.add(lblRectangle);
+	}
+
+	// Borrar fila
+	public void borrarFila() {
+		int fila = table.getSelectedRow();
+		((DefaultTableModel) table.getModel()).removeRow(fila);
 	}
 
 	// Getters campos de texto
@@ -193,7 +242,7 @@ public class Vista extends JFrame {
 	public String getSeleccion() {
 		int fila = table.getSelectedRow();
 		String seleccion = table.getValueAt(fila, 0).toString();
-		tituloSeleccionado= seleccion;
+		tituloSeleccionado = seleccion;
 		return seleccion;
 	}
 
@@ -222,6 +271,6 @@ public class Vista extends JFrame {
 
 	public void cambiarMsgResultado(String resultado) {
 		lblError.setText(resultado);
-		lblError.setForeground(new Color(56, 102, 65));
+		lblError.setForeground(new Color(106, 153, 78));
 	}
 }

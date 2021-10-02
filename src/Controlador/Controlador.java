@@ -1,3 +1,6 @@
+/**
+ * @author Marta Molina Aguilera
+ */
 package Controlador;
 
 import Modelo.Modelo;

@@ -1,3 +1,6 @@
+/**
+ * @author Marta Molina Aguilera
+ */
 package Modelo;
 
 import java.sql.Connection;
@@ -15,6 +18,9 @@ import com.mysql.cj.jdbc.result.ResultSetMetaData;
 import Controlador.Controlador;
 import Vista.Vista;
 
+/*
+ * Clase la cual contiene la lógica de la aplicación.
+ */
 public class Modelo {
 	private Vista miVista;
 	private DefaultTableModel modelo;
@@ -28,47 +34,53 @@ public class Modelo {
 	private String sqlTabla1 = "SELECT * FROM BooksTable;";
 	private String[] sqlUpdates = { "UPDATE BooksTable SET ", "=? WHERE Titulo =?" };
 
+	/*
+	 * Constructor de la clase Modelo. Nada más ser creado un objeto Modelo, este
+	 * llama desde el constructor a la función de crear una conexión con la BD y
+	 * cargar la tabla con la información que esta le proporciona.
+	 */
 	public Modelo() {
 		// Cargar pantalla al empezar
 		crearConexion();
 		cargarTabla1();
 	}
 
+	/**
+	 * Función que crea la conexión con la base de datos.
+	 * 
+	 * @throws ClassNotFoundException cnfe: si no encuentra el driver
+	 *                                mysql-connector-java
+	 * @throws SQLException           sqle: Si no puede conectarse a la BD.
+	 * @throws Exception              e: Con cualquier error de otro tipo.
+	 */
 	private void crearConexion() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conexion = DriverManager.getConnection(url, login, pwd);
-			System.out.println(" - Conexión con MySQL establecida -");
-			if (conexion != null) {
-				System.out.println("Conexión a la BD: " + url + " ok!");
-			}
 		} catch (ClassNotFoundException cnfe) {
 			System.err.println("Driver JDBC no encontrado");
 			cnfe.printStackTrace();
 		} catch (SQLException sqle) {
-			System.out.println("Error al conectarse a al BD");
+			System.err.println("Error al conectarse a al BD");
 			sqle.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("Error general");
+			System.err.println("Error general");
 			e.printStackTrace();
 		}
 	}
 
-	private void cerrarConexion() {
-		try {
-			conexion.close();
-		} catch (SQLException e) {
-			System.err.println("No se pudo cerrar la conexión.");
-		}
-	}
-
+	/**
+	 * Función la cual carga los datos de la tabla BooksTable y hace que la tabla de
+	 * la ventana no sea editable.
+	 * 
+	 * @throws SQLException e: Si hubiera problemas accediendo a la Base de Datos.
+	 */
 	private void cargarTabla1() {
 		modelo = new DefaultTableModel();
 		int numColumnas = getNumColumnas(sqlTabla1);
 		int numFilas = getNumFilas(sqlTabla1);
 
 		String[] cabecera = new String[numColumnas];
-
 		Object[][] contenido = new Object[numFilas][numColumnas];
 		try {
 			pstmt = conexion.prepareStatement(sqlTabla1);
@@ -95,6 +107,14 @@ public class Modelo {
 
 	}
 
+	/**
+	 * Función la cual retorna el numero de columnas generado por la consulta
+	 * ejecutada.
+	 * 
+	 * @param sql: Query a ejecutar.
+	 * @return num: número de columnas.
+	 * @throws SQLException e: si hay error al consultar la BD
+	 */
 	private int getNumColumnas(String sql) {
 		int num = 0;
 		try {
@@ -108,6 +128,14 @@ public class Modelo {
 		return num;
 	}
 
+	/**
+	 * Función la cual retorna el numero de filas generado por la consulta
+	 * ejecutada.
+	 * 
+	 * @param sql: Query a ejecutar.
+	 * @return numFilas: nuemro de filas.
+	 * @throws SQLException e: si hay error al consultar la BD
+	 */
 	private int getNumFilas(String sql) {
 		int numFilas = 0;
 		try {
@@ -121,6 +149,21 @@ public class Modelo {
 		return numFilas;
 	}
 
+	/**
+	 * Función la cual hace un insert a la base de datos y añade una fila con estos
+	 * a la tabla. Si hay un errror, muestra un mensaje en la ventana,
+	 * 
+	 * @param titulo:    dato enviado por el controlador, procedente de la vista del
+	 *                   campo de texto de título.
+	 * @param autor:     dato enviado por el controlador, procedente de la vista del
+	 *                   campo de texto de autor.
+	 * @param categoria: dato enviado por el controlador, procedente de la vista del
+	 *                   campo de texto de categoria.
+	 * @param precio:    dato enviado por el controlador, procedente de la vista del
+	 *                   campo de texto de precio.
+	 * @throws SQLException e: Si hay error al añadir el registro.
+	 * 
+	 */
 	public void annadirRegistro(String titulo, String autor, String categoria, String precio) {
 		try {
 			Statement stmt = conexion.createStatement();
@@ -128,15 +171,22 @@ public class Modelo {
 					+ "','" + autor + "','" + categoria + "','" + precio + "')";
 			stmt.executeUpdate(qery);
 			stmt.close();
-			modelo.insertRow(modelo.getRowCount(),
-					new String[] { (modelo.getRowCount() + 1) + "", titulo, autor, categoria, precio.toString() });
-
+			modelo.insertRow(modelo.getRowCount(), new String[] { titulo, autor, categoria, precio.toString()});
+			miVista.cambiarMsgResultado(
+					"Los datos han sido modificados, se mostrarán al minimizar y reabrir la ventana.");
 		} catch (SQLException e) {
 			miVista.cambiarError("Error al añadir registro");
 			System.err.println(e);
 		}
 	}
 
+	/**
+	 * Método el cual modifica los datos del registro seleccionado en la ventana.
+	 * 
+	 * @param datos: array con los datos nuevos para el registro seleccionado.
+	 * @throws SQLException e: Si hay error al seleccionar el registro.
+	 * 
+	 */
 	public void modificarRegistro(String[] datos) {
 
 		try {
@@ -153,12 +203,9 @@ public class Modelo {
 			String qry = "";
 
 			for (int i = 1; i < cabecera.length; ++i) {
-				qry = "UPDATE BooksTable SET " + cabecera[i] + "='" + datos[i + 1] + "' WHERE Titulo ='" + seleccion
-						+ "';";
-				System.out.println(qry);
+				qry = "UPDATE BooksTable SET " + cabecera[i] + "='" + datos[i] + "' WHERE Titulo ='" + seleccion + "';";
 				PreparedStatement pst;
 				pst = conexion.prepareStatement(qry);
-				System.out.println(pstmt);
 				stmt.executeUpdate(qry);
 
 			}
@@ -178,34 +225,56 @@ public class Modelo {
 		}
 	}
 
+	/**
+	 * Metodo el cual borra el registro seleccionado en la tabla de miVista y en la
+	 * base de datos.
+	 * 
+	 * @param titulo: título(ID) de regitro a borrar.
+	 * @throws SQLException e: Si hay error al borrar el registro.
+	 */
 	public void borrarRegistro(String titulo) {
 		try {
 			Statement stmt = conexion.createStatement();
 			ResultSet rset = pstmt.executeQuery();
 			String qry = "DELETE FROM BooksTable WHERE Titulo='" + titulo + "';";
-			System.out.println(qry);
 			PreparedStatement pst;
 			pst = conexion.prepareStatement(qry);
-			System.out.println(pstmt);
 			stmt.executeUpdate(qry);
 			stmt.close();
 			cargarTabla1();
-			miVista.cambiarMsgResultado(
-					"Los datos han sido modificados, se mostrarán al minimizar y reabrir la ventana.");
+			miVista.cambiarMsgResultado("El registro ha sido eliminado.");
+			miVista.borrarFila();
 		} catch (SQLException e) {
 			miVista.cambiarError("Error al eliminar registro");
 			System.err.println(e);
 		}
 	}
 
+	/**
+	 * Métod el cual llama a la Vista y hace visible en pantalla el título del
+	 * registro seleccionado.
+	 * 
+	 * @param seleccion: título seleccionado en la tabla.
+	 */
 	public void mostrarSeleccion(String seleccion) {
 		miVista.setSeleccion(seleccion);
 	}
 
+	/**
+	 * Función la cual retorna un objeto de la clase actual.
+	 * 
+	 * @return modelo
+	 */
 	public DefaultTableModel getModelo() {
 		return modelo;
 	}
 
+	/**
+	 * Método el cual asigna los valores de la clase Vista a la instancia declarada
+	 * en esta clase. Consiguiendo así la comunicación entre clases.
+	 * 
+	 * @param miVista
+	 */
 	public void setVista(Vista miVista) {
 		this.miVista = miVista;
 	}
