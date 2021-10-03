@@ -13,8 +13,8 @@ public class Launcher {
 	private Vista miVista;
 
 	/*
-	 * Main de la clase la cual crea un objeto de Vista, Modelo y Controlador. Hace
-	 * visible crea y hace visible la ventana.
+	 * Main de la clase la cual crea un objeto de Vista, Modelo y Controlador. Crea
+	 * y hace visible la ventana.
 	 */
 	public static void main(String[] args) {
 		Vista miVista = new Vista();
@@ -35,7 +35,7 @@ public class Launcher {
 
 	/**
 	 * Setter del modelo, el cual contiene logica del código. Consiguiendo así la
-	 * comunicación entre clases.
+	 * comunicación entre clases. Es llamado desde la lanzadera.
 	 * 
 	 * @param miModelo
 	 */

@@ -259,9 +259,6 @@ public class Modelo {
 	 * seleccionado.
 	 * 
 	 * @param seleccion: título seleccionado en la tabla.
-	 * @param autor:     autor del artículo seleccionado en la tabla.
-	 * @param categoria: categoria del artículo seleccionado en la tabla.
-	 * @param precio:    precio del artículo seleccionado en la tabla.
 	 * 
 	 */
 	public void mostrarSeleccion(String titulo) {

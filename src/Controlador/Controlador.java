@@ -63,7 +63,7 @@ public class Controlador {
 
 	/**
 	 * Método el cual llama a la función con el mismo nombre del controlador, le
-	 * pasa cómo parámetro el título del elemento seleccionado enla tabla.
+	 * pasa cómo parámetro el título del elemento seleccionado en la tabla.
 	 */
 	public void borrarRegistro() {
 		miModelo.borrarRegistro(miVista.getTituloSeleccionado());

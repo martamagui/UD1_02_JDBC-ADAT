@@ -50,6 +50,7 @@ public class Vista extends JFrame {
 	private JLabel lblError, lblSeleccion;
 	private String tituloSeleccionado;
 	private JLabel lblRectangle;
+	private static ImageIcon img = new ImageIcon("imgs/martaMolina.png");
 
 	/**
 	 * Constructor de la clase, aplica todos los atributos visuales a la ventana.
@@ -62,7 +63,8 @@ public class Vista extends JFrame {
 				table.setModel(miModelo.getModelo());
 			}
 		});
-		setTitle("Tablas");
+		setTitle("Marta MA - UD1_02_JDBC");
+		setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 941, 690);
 		contentPane = new JPanel();
@@ -273,42 +275,6 @@ public class Vista extends JFrame {
 	public String getSeleccionTitulo() {
 		int fila = table.getSelectedRow();
 		String seleccion = table.getValueAt(fila, 0).toString();
-		tituloSeleccionado = seleccion;
-		return seleccion;
-	}
-
-	/**
-	 * Método el cual devulve el autor del elemento seleccionado.
-	 * 
-	 * @return seleccion: autor del elemento seleccionado.Tipo String.
-	 */
-	public String getSeleccionAutor() {
-		int fila = table.getSelectedRow();
-		String seleccion = table.getValueAt(fila, 1).toString();
-		tituloSeleccionado = seleccion;
-		return seleccion;
-	}
-
-	/**
-	 * Método el cual devulve la categoría del elemento seleccionado.
-	 * 
-	 * @return seleccion: la categoría del elemento seleccionado.Tipo String.
-	 */
-	public String getSeleccionCategoria() {
-		int fila = table.getSelectedRow();
-		String seleccion = table.getValueAt(fila, 2).toString();
-		tituloSeleccionado = seleccion;
-		return seleccion;
-	}
-
-	/**
-	 * Método el cual devulve el precio del elemento seleccionado.
-	 * 
-	 * @return seleccion: precio del elemento seleccionado.Tipo String.
-	 */
-	public String getSeleccionPrecio() {
-		int fila = table.getSelectedRow();
-		String seleccion = table.getValueAt(fila, 3).toString();
 		tituloSeleccionado = seleccion;
 		return seleccion;
 	}
