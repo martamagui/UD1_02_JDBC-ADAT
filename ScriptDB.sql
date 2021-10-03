@@ -15,5 +15,5 @@ INSERT INTO BooksTable(Titulo, Autor, Categoria, Precio) VALUES
 ('C/C++. Curso de programación (Manuales Imprescindibles)','Miguel Angel Acera','Programación','27.31 €');
 
 select * from BooksTable;
-UPDATE BooksTable SET Titulo='C/C++. Curso de programaciónes' WHERE Titulo ='27.31 €';
+
 
