@@ -39,6 +39,7 @@ import java.awt.event.MouseEvent;
  * Clase la cual implementa todos los atributos visuales de la app.
  * 
  */
+@SuppressWarnings("serial")
 public class Vista extends JFrame {
 
 	private JPanel contentPane;
@@ -50,6 +51,9 @@ public class Vista extends JFrame {
 	private String tituloSeleccionado;
 	private JLabel lblRectangle;
 
+	/**
+	 * Constructor de la clase, aplica todos los atributos visuales a la ventana.
+	 */
 	public Vista() {
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
@@ -213,30 +217,59 @@ public class Vista extends JFrame {
 		contentPane.add(lblRectangle);
 	}
 
-	// Borrar fila
+	/**
+	 * Método el cual quita una fila de la tabla.
+	 */
 	public void borrarFila() {
 		int fila = table.getSelectedRow();
 		((DefaultTableModel) table.getModel()).removeRow(fila);
 	}
 
-	// Getters campos de texto
+	// --------- Getters campos de texto ---------
+
+	/**
+	 * Método el cual devuelve lo escrito en el campo de texto del título.
+	 * 
+	 * @return txtTitulo.getText();
+	 */
 	public String getTitulo() {
 		return txtTitulo.getText();
 	}
 
+	/**
+	 * Método el cual devuelve lo escrito en el campo de texto del autor.
+	 * 
+	 * @return txtAutor.getText(); Tipo String.
+	 */
 	public String getAutor() {
 		return txtAutor.getText();
 	}
 
+	/**
+	 * Método el cual devuelve lo escrito en el campo de texto de la categoría.
+	 * 
+	 * @return txtCategoria.getText(); Tipo String.
+	 */
 	public String getCategoria() {
 		return txtCategoria.getText();
 	}
 
+	/**
+	 * Método el cual devuelve lo escrito en el campo de texto del precio.
+	 * 
+	 * @return txtPrecio.getText(); Tipo String.
+	 */
 	public String getPrecio() {
 		return txtPrecio.getText();
 	}
 
-	// Getter selección
+	// --------- Getter selecciones de la tabla ---------
+
+	/**
+	 * Método el cual devulve el título del elemento seleccionado.
+	 * 
+	 * @return seleccion: titulo del elemento seleccionado.Tipo String.
+	 */
 	public String getSeleccionTitulo() {
 		int fila = table.getSelectedRow();
 		String seleccion = table.getValueAt(fila, 0).toString();
@@ -244,6 +277,11 @@ public class Vista extends JFrame {
 		return seleccion;
 	}
 
+	/**
+	 * Método el cual devulve el autor del elemento seleccionado.
+	 * 
+	 * @return seleccion: autor del elemento seleccionado.Tipo String.
+	 */
 	public String getSeleccionAutor() {
 		int fila = table.getSelectedRow();
 		String seleccion = table.getValueAt(fila, 1).toString();
@@ -251,6 +289,11 @@ public class Vista extends JFrame {
 		return seleccion;
 	}
 
+	/**
+	 * Método el cual devulve la categoría del elemento seleccionado.
+	 * 
+	 * @return seleccion: la categoría del elemento seleccionado.Tipo String.
+	 */
 	public String getSeleccionCategoria() {
 		int fila = table.getSelectedRow();
 		String seleccion = table.getValueAt(fila, 2).toString();
@@ -258,6 +301,11 @@ public class Vista extends JFrame {
 		return seleccion;
 	}
 
+	/**
+	 * Método el cual devulve el precio del elemento seleccionado.
+	 * 
+	 * @return seleccion: precio del elemento seleccionado.Tipo String.
+	 */
 	public String getSeleccionPrecio() {
 		int fila = table.getSelectedRow();
 		String seleccion = table.getValueAt(fila, 3).toString();
@@ -265,47 +313,65 @@ public class Vista extends JFrame {
 		return seleccion;
 	}
 
+	/**
+	 * Método el cual devulve el String del tituloSeleccionado
+	 * 
+	 * @return tituloSeleccionado: la categoría del elemento seleccionado, tipo
+	 *         String.
+	 */
 	public String getTituloSeleccionado() {
 		return tituloSeleccionado;
 	}
 
-	// Setters
+	// --------- Setters ---------
+
+	/**
+	 * Función la cual asigna el String pasado por parámetro a la lblSeleccion
+	 * 
+	 * @param seleccion: Título del elemento seleccionado, tipo String.
+	 */
 	public void setSeleccion(String seleccion) {
 		lblSeleccion.setText("Selección: " + seleccion);
 	}
 
-	public void setTxtTitulo(String param) {
-		txtTitulo.setText(param);
-	}
-
-	public void setTxtAutor(String param) {
-		txtAutor.setText(param);
-	}
-
-	public void setTxtCategoria(String param) {
-		txtCategoria.setText(param);
-	}
-
-	public void setTxtPrecio(String param) {
-		txtPrecio.setText(param);
-	}
-
-	// Comunicación entre clases
-	public void setModelo(Modelo miModelo2) {
-		this.miModelo = miModelo2;
-	}
-
-	public void setControlador(Controlador miControlador2) {
-		this.miControlador = miControlador2;
-	}
-
+	/**
+	 * Función la cual asigna color y mensaje a la etiqueta de error.
+	 * 
+	 * @param msgError: Tipo String, mensaje de error/resultado.
+	 */
 	public void cambiarError(String msgError) {
 		lblError.setText(msgError);
 		lblError.setForeground(new Color(188, 71, 73));
 	}
 
+	/**
+	 * Función la cual asigna color y mensaje a la etiqueta de error.
+	 * 
+	 * @param msgError: Tipo String, mensaje de error/resultado.
+	 */
 	public void cambiarMsgResultado(String resultado) {
 		lblError.setText(resultado);
 		lblError.setForeground(new Color(106, 153, 78));
+	}
+	// --------- Comunicación entre clases ---------
+
+	/**
+	 * Método el cual asigna las propiedades del objeto Modelo y hace posible la
+	 * comunicación entre clases.
+	 * 
+	 * @param miModelo: Objeto de la clase Modelo.
+	 */
+	public void setModelo(Modelo miModelo) {
+		this.miModelo = miModelo;
+	}
+
+	/**
+	 * Método el cual asigna las propiedades del objeto Controlador y hace posible
+	 * la comunicación entre clases.
+	 * 
+	 * @param miControlador
+	 */
+	public void setControlador(Controlador miControlador) {
+		this.miControlador = miControlador;
 	}
 }

@@ -47,8 +47,7 @@ public class Controlador {
 	 * parámetro el título de la fila seleccionada de la vista.
 	 */
 	public void mostrarSeleccion() {
-		miModelo.mostrarSeleccion(miVista.getSeleccionTitulo(), miVista.getSeleccionAutor(),
-				miVista.getSeleccionCategoria(), miVista.getSeleccionPrecio());
+		miModelo.mostrarSeleccion(miVista.getSeleccionTitulo());
 	}
 
 	/**

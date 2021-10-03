@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+
 
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
@@ -21,6 +21,7 @@ import Vista.Vista;
 /*
  * Clase la cual contiene la lógica de la aplicación.
  */
+@SuppressWarnings("unused")
 public class Modelo {
 	private Vista miVista;
 	private DefaultTableModel modelo;
@@ -32,7 +33,6 @@ public class Modelo {
 	private Connection conexion;
 	private PreparedStatement pstmt;
 	private String sqlTabla1 = "SELECT * FROM BooksTable;";
-	private String[] sqlUpdates = { "UPDATE BooksTable SET ", "=? WHERE Titulo =?" };
 
 	/*
 	 * Constructor de la clase Modelo. Nada más ser creado un objeto Modelo, este
@@ -75,6 +75,7 @@ public class Modelo {
 	 * 
 	 * @throws SQLException e: Si hubiera problemas accediendo a la Base de Datos.
 	 */
+	@SuppressWarnings("serial")
 	private void cargarTabla1() {
 		modelo = new DefaultTableModel();
 		int numColumnas = getNumColumnas(sqlTabla1);
@@ -172,8 +173,7 @@ public class Modelo {
 			stmt.executeUpdate(qery);
 			stmt.close();
 			modelo.insertRow(modelo.getRowCount(), new String[] { titulo, autor, categoria, precio.toString() });
-			miVista.cambiarMsgResultado(
-					"Los datos han sido agregados.");
+			miVista.cambiarMsgResultado("Los datos han sido agregados");
 		} catch (SQLException e) {
 			miVista.cambiarError("Error al añadir registro");
 			System.err.println(e);
@@ -203,7 +203,8 @@ public class Modelo {
 			String qry = "";
 
 			for (int i = 1; i < cabecera.length; ++i) {
-				qry = "UPDATE BooksTable SET " + cabecera[i] + "='" + datos[i] + "' WHERE Titulo ='" + seleccion + "';";
+				qry = "UPDATE BooksTable SET " + cabecera[i] + "='" + datos[i + 1] + "' WHERE Titulo ='" + seleccion
+						+ "';";
 				PreparedStatement pst;
 				pst = conexion.prepareStatement(qry);
 				stmt.executeUpdate(qry);
@@ -259,12 +260,8 @@ public class Modelo {
 	 * @param precio:    precio del artículo seleccionado en la tabla.
 	 * 
 	 */
-	public void mostrarSeleccion(String titulo, String autor, String categoria, String precio) {
+	public void mostrarSeleccion(String titulo) {
 		miVista.setSeleccion(titulo);
-		miVista.setTxtTitulo(titulo);
-		miVista.setTxtAutor(autor);
-		miVista.setTxtCategoria(categoria);
-		miVista.setTxtPrecio(precio);
 	}
 
 	/**

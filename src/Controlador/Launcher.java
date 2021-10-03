@@ -7,7 +7,9 @@ import Modelo.Modelo;
 import Vista.Vista;
 
 public class Launcher {
+	@SuppressWarnings("unused")
 	private Modelo miModelo;
+	@SuppressWarnings("unused")
 	private Vista miVista;
 
 	/*
@@ -32,8 +34,8 @@ public class Launcher {
 	}
 
 	/**
-	 * Setter del modelo, el cual contiene logica del código.
-	 * Consiguiendo así la comunicación entre clases.
+	 * Setter del modelo, el cual contiene logica del código. Consiguiendo así la
+	 * comunicación entre clases.
 	 * 
 	 * @param miModelo
 	 */
