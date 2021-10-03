@@ -68,7 +68,6 @@ public class Vista extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		UIManager.put("Button.select", new Color(56, 102, 65));
-		
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(60, 307, 805, 304);
@@ -111,7 +110,7 @@ public class Vista extends JFrame {
 
 		JLabel lblAutor = new JLabel("Autor:");
 		lblAutor.setForeground(new Color(56, 102, 65));
-		lblAutor.setBounds(60, 200, 100, 30);
+		lblAutor.setBounds(470, 140, 100, 30);
 		contentPane.add(lblAutor);
 
 		txtAutor = new JTextField();
@@ -122,12 +121,12 @@ public class Vista extends JFrame {
 			}
 		});
 		txtAutor.setColumns(10);
-		txtAutor.setBounds(119, 200, 300, 30);
+		txtAutor.setBounds(556, 140, 300, 30);
 		contentPane.add(txtAutor);
 
 		JLabel lblCategora = new JLabel("Categoría:");
 		lblCategora.setForeground(new Color(56, 102, 65));
-		lblCategora.setBounds(470, 140, 100, 30);
+		lblCategora.setBounds(60, 200, 100, 30);
 		contentPane.add(lblCategora);
 
 		txtCategoria = new JTextField();
@@ -138,7 +137,7 @@ public class Vista extends JFrame {
 			}
 		});
 		txtCategoria.setColumns(10);
-		txtCategoria.setBounds(556, 140, 300, 30);
+		txtCategoria.setBounds(119, 200, 300, 30);
 		contentPane.add(txtCategoria);
 
 		JLabel lblPrecio = new JLabel("Precio:");
@@ -239,9 +238,30 @@ public class Vista extends JFrame {
 	}
 
 	// Getter selección
-	public String getSeleccion() {
+	public String getSeleccionTitulo() {
 		int fila = table.getSelectedRow();
 		String seleccion = table.getValueAt(fila, 0).toString();
+		tituloSeleccionado = seleccion;
+		return seleccion;
+	}
+
+	public String getSeleccionAutor() {
+		int fila = table.getSelectedRow();
+		String seleccion = table.getValueAt(fila, 1).toString();
+		tituloSeleccionado = seleccion;
+		return seleccion;
+	}
+
+	public String getSeleccionCategoria() {
+		int fila = table.getSelectedRow();
+		String seleccion = table.getValueAt(fila, 2).toString();
+		tituloSeleccionado = seleccion;
+		return seleccion;
+	}
+
+	public String getSeleccionPrecio() {
+		int fila = table.getSelectedRow();
+		String seleccion = table.getValueAt(fila, 2).toString();
 		tituloSeleccionado = seleccion;
 		return seleccion;
 	}
@@ -253,6 +273,22 @@ public class Vista extends JFrame {
 	// Setters
 	public void setSeleccion(String seleccion) {
 		lblSeleccion.setText("Selección: " + seleccion);
+	}
+
+	public void setTxtTitulo(String param) {
+		txtTitulo.setText(param);
+	}
+
+	public void setTxtAutor(String param) {
+		txtAutor.setText(param);
+	}
+
+	public void setTxtCategoria(String param) {
+		txtCategoria.setText(param);
+	}
+
+	public void setTxtPrecio(String param) {
+		txtPrecio.setText(param);
 	}
 
 	// Comunicación entre clases

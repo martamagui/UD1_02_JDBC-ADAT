@@ -171,7 +171,7 @@ public class Modelo {
 					+ "','" + autor + "','" + categoria + "','" + precio + "')";
 			stmt.executeUpdate(qery);
 			stmt.close();
-			modelo.insertRow(modelo.getRowCount(), new String[] { titulo, autor, categoria, precio.toString()});
+			modelo.insertRow(modelo.getRowCount(), new String[] { titulo, autor, categoria, precio.toString() });
 			miVista.cambiarMsgResultado(
 					"Los datos han sido modificados, se mostrarán al minimizar y reabrir la ventana.");
 		} catch (SQLException e) {
@@ -251,13 +251,22 @@ public class Modelo {
 	}
 
 	/**
-	 * Métod el cual llama a la Vista y hace visible en pantalla el título del
-	 * registro seleccionado.
+	 * Método el cual llama a la Vista y hace visible en pantalla el título del
+	 * registro seleccionado. Asigna en los campos de texto los valores del artículo
+	 * seleccionado.
 	 * 
 	 * @param seleccion: título seleccionado en la tabla.
+	 * @param autor:     autor del artículo seleccionado en la tabla.
+	 * @param categoria: categoria del artículo seleccionado en la tabla.
+	 * @param precio:    precio del artículo seleccionado en la tabla.
+	 * 
 	 */
-	public void mostrarSeleccion(String seleccion) {
-		miVista.setSeleccion(seleccion);
+	public void mostrarSeleccion(String titulo, String autor, String categoria, String precio) {
+		miVista.setSeleccion(titulo);
+		miVista.setTxtTitulo(titulo);
+		miVista.setTxtAutor(autor);
+		miVista.setTxtCategoria(categoria);
+		miVista.setTxtPrecio(precio);
 	}
 
 	/**
