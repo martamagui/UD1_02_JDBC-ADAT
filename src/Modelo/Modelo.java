@@ -173,7 +173,7 @@ public class Modelo {
 			stmt.close();
 			modelo.insertRow(modelo.getRowCount(), new String[] { titulo, autor, categoria, precio.toString() });
 			miVista.cambiarMsgResultado(
-					"Los datos han sido modificados, se mostrarán al minimizar y reabrir la ventana.");
+					"Los datos han sido agregados.");
 		} catch (SQLException e) {
 			miVista.cambiarError("Error al añadir registro");
 			System.err.println(e);
@@ -207,17 +207,15 @@ public class Modelo {
 				PreparedStatement pst;
 				pst = conexion.prepareStatement(qry);
 				stmt.executeUpdate(qry);
-
 			}
 			// Para que la modificación del titulo no pise el resto
 			qry = "UPDATE BooksTable SET " + cabecera[0] + "='" + datos[1] + "' WHERE Titulo ='" + seleccion + "';";
 			pstmt = conexion.prepareStatement(qry);
 			stmt.executeUpdate(qry);
 			stmt.close();
-
-			cargarTabla1();
 			miVista.cambiarMsgResultado(
 					"Los datos han sido modificados, se mostrarán al minimizar y reabrir la ventana.");
+			cargarTabla1();
 
 		} catch (SQLException e) {
 			miVista.cambiarError("Error al modificar registro");

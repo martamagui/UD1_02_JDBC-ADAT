@@ -35,6 +35,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Clase la cual implementa todos los atributos visuales de la app.
+ * 
+ */
 public class Vista extends JFrame {
 
 	private JPanel contentPane;
@@ -45,11 +49,6 @@ public class Vista extends JFrame {
 	private JLabel lblError, lblSeleccion;
 	private String tituloSeleccionado;
 	private JLabel lblRectangle;
-
-	public static void main(String[] args) {
-		Vista frame = new Vista();
-		frame.setVisible(true);
-	}
 
 	public Vista() {
 		setResizable(false);
@@ -261,7 +260,7 @@ public class Vista extends JFrame {
 
 	public String getSeleccionPrecio() {
 		int fila = table.getSelectedRow();
-		String seleccion = table.getValueAt(fila, 2).toString();
+		String seleccion = table.getValueAt(fila, 3).toString();
 		tituloSeleccionado = seleccion;
 		return seleccion;
 	}
