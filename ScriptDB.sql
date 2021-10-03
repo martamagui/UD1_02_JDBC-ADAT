@@ -3,9 +3,9 @@ CREATE DATABASE IF NOT EXISTS Books DEFAULT CHARACTER SET latin1 COLLATE latin1_
 USE Books;
 CREATE TABLE BooksTable(
     Titulo varchar (255) NOT NULL,
-    Autor varchar (255) NOT NULL,
-    Categoria varchar (255) NOT NULL,
-    Precio varchar (255) NOT NULL,
+    Autor varchar (255),
+    Categoria varchar (255),
+    Precio varchar (255),
     PRIMARY KEY (Titulo)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 INSERT INTO BooksTable(Titulo, Autor, Categoria, Precio) VALUES
@@ -15,5 +15,5 @@ INSERT INTO BooksTable(Titulo, Autor, Categoria, Precio) VALUES
 ('C/C++. Curso de programación (Manuales Imprescindibles)','Miguel Angel Acera','Programación','27.31 €');
 
 select * from BooksTable;
-
+UPDATE BooksTable SET Titulo='C/C++. Curso de programaciónes' WHERE Titulo ='27.31 €';
 

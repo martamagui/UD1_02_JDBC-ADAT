@@ -174,8 +174,10 @@ public class Modelo {
 			stmt.close();
 			modelo.insertRow(modelo.getRowCount(), new String[] { titulo, autor, categoria, precio.toString() });
 			miVista.cambiarMsgResultado("Los datos han sido agregados");
+			miVista.setVisible(false);
+			miVista.setVisible(true);
 		} catch (SQLException e) {
-			miVista.cambiarError("Error al añadir registro");
+			miVista.cambiarError("Error al añadir registro. Cierre y abara la app de nuevo.");
 			System.err.println(e);
 		}
 	}
@@ -215,11 +217,13 @@ public class Modelo {
 			stmt.executeUpdate(qry);
 			stmt.close();
 			miVista.cambiarMsgResultado(
-					"Los datos han sido modificados, se mostrarán al minimizar y reabrir la ventana.");
+					"Los datos han sido modificados.");
 			cargarTabla1();
+			miVista.setVisible(false);
+			miVista.setVisible(true);
 
 		} catch (SQLException e) {
-			miVista.cambiarError("Error al modificar registro");
+			miVista.cambiarError("Error al añadir registro. Cierre y abara la app de nuevo.");
 			System.err.println(e);
 		}
 	}
@@ -244,7 +248,7 @@ public class Modelo {
 			miVista.cambiarMsgResultado("El registro ha sido eliminado.");
 			miVista.borrarFila();
 		} catch (SQLException e) {
-			miVista.cambiarError("Error al eliminar registro");
+			miVista.cambiarError("Error al añadir registro. Cierre y abara la app de nuevo.");
 			System.err.println(e);
 		}
 	}
